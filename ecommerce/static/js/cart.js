@@ -15,7 +15,8 @@ for (let i = 0; i < updateBtns.length; i++) {
     });
 }
 
-/**   Sends productId and action as a JSON object to the 'update_item' view to update user order */
+/**   Sends productId and action as a JSON object to 
+ * the 'update_item' view to update user order */
 function updateUserOrder(productId, action) {
     console.log('User is logged in, sending data...')
 
