@@ -8,11 +8,17 @@ for (let i = 0; i < updateBtns.length; i++) {
 
         console.log('USER: ', user)
         if (user === 'AnonymousUser') {
-            console.log('Not logged in')
+            addCookieItem()
         } else {
             updateUserOrder(productId, action)
         }
     });
+}
+
+/** */
+function addCookieItem(productId, action) {
+    console.log('Not logged in')
+
 }
 
 /**   Sends productId and action as a JSON object to 

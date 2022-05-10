@@ -19,7 +19,7 @@ class Product(models.Model):
     """Model for product data. Contains name, price, image, and boolean for 
     digital product status"""
     name = models.CharField(max_length=200, null=True)
-    price = models.FloatField()
+    price = models.DecimalField(max_digits=7, decimal_places=2)
     image = models.ImageField(null=True, blank=True)
     digital = models.BooleanField(default=False, null=True, blank=False)
 
