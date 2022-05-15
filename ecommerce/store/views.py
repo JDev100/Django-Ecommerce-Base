@@ -5,6 +5,8 @@ from django.http import JsonResponse, HttpRequest
 from .models import *
 import json
 import datetime
+from .utils import cartData
+
 # Create your views here.
 
 
@@ -14,16 +16,8 @@ def store(request):
     the products for sale. Users can add items to their cart in
     this view
     """
-    if request.user.is_authenticated:
-        customer = request.user.customer
-        order, created = Order.objects.get_or_create(
-        customer=customer, complete=False)
-        items = order.orderitem_set.all()
-        cartItems = order.get_total_items
-    else:
-        order = {'get_cart_total': 0, 'get_total_items': 0, 'shipping': False}
-        cartItems = order['get_total_items']
-        items = {'get_total': 0}
+    data = cartData(request)
+    cartItems = data['cartItems']
     products = Product.objects.all
     context = {'products': products, 'cartItems': cartItems}
     return render(request, 'store/store.html', context)
@@ -34,16 +28,10 @@ def cart(request):
     This view renders the cart items in current order
     along with the total prices
     """
-    if request.user.is_authenticated:
-        customer = request.user.customer
-        order, created = Order.objects.get_or_create(
-        customer=customer, complete=False)
-        items = order.orderitem_set.all()
-        cartItems = order.get_total_items
-    else:
-        order = {'get_cart_total': 0, 'get_total_items': 0, 'shipping': False}
-        cartItems = order['get_total_items']
-        items = {'get_total': 0}
+    data = cartData(request)
+    items = data['items']
+    order = data['order']
+    cartItems = data['cartItems']
     context = {'items': items, 'order': order, 'cartItems':cartItems}
     return render(request, 'store/cart.html', context)
 
@@ -53,18 +41,14 @@ def checkout(request):
     This view renders the checkout page along with
     forms to add payment and shipping info
     """
-    if request.user.is_authenticated:
-        customer = request.user.customer
-        order, created = Order.objects.get_or_create(
-        customer=customer, complete=False)
-        items = order.orderitem_set.all()
-        cartItems = order.get_total_items
-    else:
-        order = {'get_cart_total': 0, 'get_total_items': 0, 'shipping': False}
-        cartItems = order['get_total_items']
-        items = {'get_total': 0}
+
+    data = cartData(request)
+    items = data['items']
+    order = data['order']
+    cartItems = data['cartItems']
     context = {'items': items, 'order': order, 'cartItems': cartItems}
     return render(request, 'store/checkout.html', context)
+
 
 
 def updateItem(request):
